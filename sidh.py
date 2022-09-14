@@ -43,8 +43,9 @@ class Complex(object):
 
 
 def j_invariant(A,C):
+
     """ The invariant function used. 
-    Ref:
+    Ref
     https://github.com/microsoft/PQCrypto-SIDH/blob/75ed5b09bd06a19cdad7660bef10e820074f808f/src/ec_isogeny.c#L247
 
     Args:
@@ -55,21 +56,54 @@ def j_invariant(A,C):
     """
 
     jinv = A**2  
-	t1 = C**2
-	t0 = t1 + t1
-	t0 = jinv - t0
-	t0 = t0 - t1
-	jinv = t0 - t1
-	t1 = t1**2
-	jinv = jinv * t1
-	t0 = t0 + t0
-	t0 = t0 + t0
-	t1 = t0**2
-	t0 = t0 * t1
-	t0 = t0 + t0
-	t0 = t0 + t0
-	jinv = inv(jinv)
-	jinv = t0 * jinv
-
+    t1 = C**2
+    t0 = t1 + t1
+    t0 = jinv - t0
+    t0 = t0 - t1
+    jinv = t0 - t1
+    t1 = t1**2
+    jinv = jinv * t1
+    t0 = t0 + t0
+    t0 = t0 + t0
+    t1 = t0**2
+    t0 = t0 * t1
+    t0 = t0 + t0
+    t0 = t0 + t0
+    jinv = inv(jinv)
+    jinv = t0 * jinv
 
     return jinv
+
+
+def xDBLADD(XP, ZP, XQ, ZQ, xPQ):
+    """
+    Montgomery Addition
+    Input: projective Montgomery points xP=XP/ZP and xQ=XQ/ZQ
+      affine difference x(P-Q)=xPQ
+
+    Args:
+        XP (int): 
+        ZP (int): 
+        XQ (int): 
+        ZQ (int):
+        xPQ (int): 
+
+    Returns:
+      projective coordinates x(Q+P)=XQP/XZP
+    """
+
+    t0 = XP + ZP   
+    t1 = XP - ZP
+    XP = XQ - ZQ
+    ZP = XQ + ZQ
+    t0 = (XP * t0)%p
+    t1 = (ZP * t1)%p
+    ZP = t0 - t1
+    XP = t0 + t1
+    ZP = (ZP**2)%p
+    XQP = (XP**2)%p
+    ZQP = (xPQ * ZP)%p
+	
+    return XQP, ZQP  
+
+
