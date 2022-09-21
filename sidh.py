@@ -372,3 +372,22 @@ def xTPLe(X, Z, A, C, e):
 
   return XeP, ZeP	          
 
+
+def LADDER(x,m,A24,C24,AliceBob):
+  binary = lambda n: n>0 and [n&1]+binary(n>>1) or []
+  bits = binary(m)
+  A24, C24 = 1, 2
+  X0, Z0 = 1, 0      #initialization with infinity
+  X1, Z1 = x, 1
+	
+  if AliceorBob == 'Alice':
+    nbits = eAbits
+  else:
+    nbits = eBbits
+  
+  for i in range(len(bits)-1, -1, -1):	
+    if bits[i] == 0:
+      X0, Z0, X1, Z1 = xDBLADD_basefield(X0, Z0, X1, Z1, x, A24, C24)
+    else:
+	    X1, Z1, X0, Z0 = xDBLADD_basefield(X1, Z1, X0, Z0, x, A24, C24)		
+ return X0, Z0, X1, Z1	
