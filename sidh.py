@@ -433,3 +433,37 @@ def xTPL_fast(x, y, m, AliceorBob):
   RX1 = RX1 % p
   return RX0, RX1, RZ        
 	
+
+def Ladder3pt_dual(m, xP, xQ, xPQ, A, AliceorBob):
+  """  affine x-coordinates xP, xQ, xPQ
+  Returns:
+       projectove x.coordinate x(P+[m]Q)=WX/WZ
+  """
+  binary = lambda n: n>0 and [n&1]+binary(n>>1) or []
+  bits = binary(m)
+
+  A24 = A + Complex(2)
+  A24 = A24 * inv4
+        
+  UX = Complex(1) 
+  UZ = Complex(0)                    #initialization with infinity
+  VX = xQ
+  VZ = Complex(1)
+  WX = xP
+  WZ = Complex(1)
+      
+  if AliceorBob == 'Alice':
+    nbits = eAbits
+  else:
+
+    nbits = eBbits
+    
+    for i in range(len(bits)-1, -1, -1):	
+        if bits[i] == 0:
+          WX, WZ = xADD(UX, UZ, WX, WZ, xP)
+          UX, UZ, VX, VZ = xDBLADD(UX, UZ, VX, VZ, xQ, A24)
+        else:
+          UX, UZ = xADD(UX, UZ, VX, VZ, xQ)
+          VX, VZ, WX, WZ = xDBLADD(VX, VZ, WX, WZ, xPQ, A24)	
+          
+  return WX, WZ	
