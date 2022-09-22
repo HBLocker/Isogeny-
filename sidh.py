@@ -374,6 +374,7 @@ def xTPLe(X, Z, A, C, e):
 
 
 def LADDER(x,m,A24,C24,AliceBob):
+
   binary = lambda n: n>0 and [n&1]+binary(n>>1) or []
   bits = binary(m)
   A24, C24 = 1, 2
@@ -384,10 +385,51 @@ def LADDER(x,m,A24,C24,AliceBob):
     nbits = eAbits
   else:
     nbits = eBbits
-  
+
   for i in range(len(bits)-1, -1, -1):	
     if bits[i] == 0:
       X0, Z0, X1, Z1 = xDBLADD_basefield(X0, Z0, X1, Z1, x, A24, C24)
     else:
 	    X1, Z1, X0, Z0 = xDBLADD_basefield(X1, Z1, X0, Z0, x, A24, C24)		
- return X0, Z0, X1, Z1	
+  return X0, Z0, X1, Z1
+
+
+def xTPL_fast(x, y, m, AliceorBob):
+  """
+    input: point P=(x,y) in base field subgroup, Q=(-x,iy), scalar m
+    output: RX0, RX1, RZ in Fp with (RX0+iRX1)/RZ is x-coordinate of P+[m]Q
+  """
+
+  A24, C24 = 1, 2
+  X0, Z0, X1, Z1 = LADDER(-x, m, A24, C24, AliceorBob)
+  RZ = (x * Z0)%p
+  RX0 = (X0 * x)%p
+  t4 = (X0 + RZ)%p
+  RZ = (X0 - RZ)%p
+  t0 = (t4**2)%p
+  RX0 = Z0 - RX0
+  t0 = (t0 * X1)%p
+  RX0 = (RX0 * RZ)%p
+  t2 = (y * Z1)%p
+  t1 = (y * Z0)%p
+  t2 = t2 + t2
+  RX1 = (t2 * Z0)%p
+  RX0 = (RX0 * Z1)%p
+  RX0 = RX0 - t0
+  t1 = (t1 * RX1)%p
+  t0 = (RX1**2)%p
+  t2 = (t2 * RX1)%p
+  RX1 = (t1 * RX0)%p
+  t3 = t1 + RX0
+  RX1 = RX1 + RX1
+  t1 = t1 - RX0
+  t1 = (t1 * t3)%p
+  RZ = (RZ**2)%p
+  t2 = (t2 * t4)%p
+  t2 = (t2 * RZ)%p
+  RZ = (t0 * RZ)%p
+  RX0 = t1 - t2
+  RX0 = RX0 % p
+  RX1 = RX1 % p
+  return RX0, RX1, RZ        
+	
