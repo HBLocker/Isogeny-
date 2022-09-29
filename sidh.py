@@ -469,40 +469,30 @@ def Ladder3pt_dual(m, xP, xQ, xPQ, A, AliceorBob):
   return WX, WZ	
 
     
-def secret_pt(x, y, m, AliceorBob):
+def get_4_isog(X4, Z4):
+  """ Computes the corresponding 4-isogeny of a projective Montgomery point (X4:Z4) of order 4.
+  Args:
+       Input:  projective point of order four P = (X4:Z4).
 
+  Returns:
+   the 4-isogenous Montgomery curve with projective coefficients A/C, where A+2C = A24plus and 4C = C24, 
+           and the 3 coefficients that are used to evaluate the isogeny at a point in eval_4_isog().
+           https://github.com/microsoft/PQCrypto-SIDH/blob/75ed5b09bd06a19cdad7660bef10e820074f808f/src/ec_isogeny.c#L76
+    
+  """
+
+  coeff0 = X4 + Z4
+  coeff3 = X4**2
+  coeff4 = Z4**2
+  coeff0 = coeff0**2
+  coeff1 = coeff3 + coeff4
+  coeff2 = coeff3 - coeff4
+  coeff3 = coeff3**2
+  coeff4 = coeff4**2
+  A = coeff3 + coeff3
+  coeff0 = coeff0 - coeff1
+  A = A - coeff4
+  C = coeff4
+  A = A + A
 	
-	A24, C24 = 1, 2
-	X0, Z0, X1, Z1 = LADDER(-x, m, A24, C24, AliceorBob)
-	
-	RZ = (x * Z0)%p
-	RX0 = (X0 * x)%p
-	t4 = (X0 + RZ)%p
-	RZ = (X0 - RZ)%p
-	t0 = (t4**2)%p
-	RX0 = Z0 - RX0
-	t0 = (t0 * X1)%p
-	RX0 = (RX0 * RZ)%p
-	t2 = (y * Z1)%p
-	t1 = (y * Z0)%p
-	t2 = t2 + t2
-	RX1 = (t2 * Z0)%p
-	RX0 = (RX0 * Z1)%p
-	RX0 = RX0 - t0
-	t1 = (t1 * RX1)%p
-	t0 = (RX1**2)%p
-	t2 = (t2 * RX1)%p
-	RX1 = (t1 * RX0)%p
-	t3 = t1 + RX0
-	RX1 = RX1 + RX1
-	t1 = t1 - RX0
-	t1 = (t1 * t3)%p
-	RZ = (RZ**2)%p
-	t2 = (t2 * t4)%p
-	t2 = (t2 * RZ)%p
-	RZ = (t0 * RZ)%p
-	RX0 = t1 - t2
-	RX0 = RX0 % p
-	RX1 = RX1 % p
-	return RX0, RX1, RZ
-	
+  return A, C, [coeff0, coeff1, coeff2, coeff3, coeff4]
