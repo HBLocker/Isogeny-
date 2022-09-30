@@ -496,3 +496,147 @@ def get_4_isog(X4, Z4):
   A = A + A
 	
   return A, C, [coeff0, coeff1, coeff2, coeff3, coeff4]
+
+def eval_4_isog(coeff, X, Z):
+
+	
+  X = coeff[0] * X
+  t0 = coeff[1] * Z
+  X = X - t0
+  Z = coeff[2] * Z
+  t0 = X - Z
+  Z = X * Z
+  t0 = t0**2
+  Z = Z + Z
+  Z = Z + Z
+  X = t0 + Z
+  Z = t0 * Z
+  Z = coeff[4] * Z
+  t0 = t0 * coeff[4]
+  t1 = X * coeff[3]
+  t0 = t0 - t1
+  X = X * t0
+	
+  return X, Z         
+
+
+
+def first_4_isog(X4, Z4, A):
+
+    t0 = X4**2
+    X = Z4**2
+    Z = X4 * Z4
+    X4 = A * Z
+    Z = Z + Z
+    Z4 = Z - X4
+    t0 = t0 + X
+    X = t0 + Z
+    Z = t0 - Z
+    X4 = X4 + t0
+    X = X * X4
+    Z = Z4 * Z
+    C = Complex(A.re - 2,A.im)
+    An = Complex(0)
+    An.re = A.re + 6
+    An.re = An.re + An.re
+    An.im = A.im + A.im
+    An = Complex(An.re , An.im)
+    
+    return X, Z, An, C 
+
+
+
+def get_3_isog(X3, Z3):
+
+
+	t0 = X3**2
+	t1 = t0 + t0
+	t0 = t0 + t1
+	t1 = Z3**2
+	A = t1**2
+	t1 = t1 + t1
+	C = t1 + t1
+	t1 = t0 - t1
+	t1 = t1 * t0
+	A = A - t1
+	A = A - t1
+	A = A - t1
+	t1 = X3 * Z3
+	C = C * t1
+	
+	return A, C   
+
+
+def eval_3_isog(X3, Z3, X, Z):
+
+	t0 = X3 * X
+	t1 = Z3 * X
+	t2 = Z3 * Z
+	t0 = t0 - t2
+	t2 = Z * X3
+	t1 = t1 - t2
+	t0 = t0**2
+	t1 = t1**2
+	X = X * t0
+	Z = Z * t1
+	
+	return X, Z   
+
+def distort_and_diff(xP):
+
+	XD = (xP**2)%p
+	XD = XD + 1
+	XD = Complex(0, XD)
+	ZD = (xP + xP)%p
+	ZD = Complex(ZD)
+	
+	return XD, ZD
+
+def inv_3_way(z1, z2, z3):
+
+
+	t0 = z1 * z2
+	t1 = t0 * z3
+	t1 = inv(t1)
+	t2 = z3 * t1
+	t3 = t2 * z2
+	z2 = t2 * z1
+	z3 = t0 * t1
+	z1 = t3
+	
+	return z1, z2, z3       
+	
+
+def get_A(xP, xQ, xR):
+
+	
+	t1 = xP + xQ
+	t0 = xP * xQ
+	A = xR * t1
+	A = A + t0
+	t0 = t0 * xR
+	A = A - Complex(1)
+	t0 = t0 + t0
+	t1 = t1 + xR
+	t0 = t0 + t0
+	A = A**2
+	t0 = inv(t0)
+	A = A * t0
+	A = A - t1
+
+	return A
+
+
+def inv(z):
+	re = z.re
+	im = z.im
+	den = re**2
+	t0 = im**2
+	den = den + t0
+	den = int(den)
+	den = pow(den, p-2, p)
+	re = re * den
+	im = im * den
+	z = Complex(re, -im)
+	
+	return z
