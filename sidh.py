@@ -390,7 +390,7 @@ def LADDER(x,m,A24,C24,AliceBob):
     if bits[i] == 0:
       X0, Z0, X1, Z1 = xDBLADD_basefield(X0, Z0, X1, Z1, x, A24, C24)
     else:
-	    X1, Z1, X0, Z0 = xDBLADD_basefield(X1, Z1, X0, Z0, x, A24, C24)		
+      X1, Z1, X0, Z0 = xDBLADD_basefield(X1, Z1, X0, Z0, x, A24, C24)		
   return X0, Z0, X1, Z1
 
 
@@ -498,8 +498,15 @@ def get_4_isog(X4, Z4):
   return A, C, [coeff0, coeff1, coeff2, coeff3, coeff4]
 
 def eval_4_isog(coeff, X, Z):
+  """
+   Computes the corresponding 4-isogeny of a projective Montgomery point (X4:Z4) of order 4.
+   https://github.com/microsoft/PQCrypto-SIKE/blob/master/Optimized_Implementation/portable/SIKEp503/ec_isogeny.c#L43
 
-	
+
+  Returns:
+      _type_: the projective point P = phi(P) = (X:Z) in the codomain. 
+  """
+
   X = coeff[0] * X
   t0 = coeff[1] * Z
   X = X - t0
@@ -522,6 +529,7 @@ def eval_4_isog(coeff, X, Z):
 
 
 def first_4_isog(X4, Z4, A):
+
 
     t0 = X4**2
     X = Z4**2
@@ -640,3 +648,20 @@ def inv(z):
 	z = Complex(re, -im)
 	
 	return z
+
+
+
+  
+def Key_gen_Alice(SK_Alice,params,splits,MAX):
+
+  A,C = Complex(0), Complex(1)
+  phiPX = params[0]
+  phiPZ = Complex(1)
+  phiQX = Complex(-phiPX)
+  phiQZ = Complex(1)
+
+#need to finish and understand the algorithm........
+
+
+
+
