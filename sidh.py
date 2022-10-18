@@ -660,7 +660,31 @@ def Key_gen_Alice(SK_Alice,params,splits,MAX):
   phiQX = Complex(-phiPX)
   phiQZ = Complex(1)
 
-#need to finish and understand the algorithm........
+  phiDX, phiDZ = distort_and_diff(phiPX)   #(phiDX:phiDZ)=x(Q-P)
+  phiPX = Complex(phiPX)
+
+  RX0, RX1, RZ = secret_pt(params[1], params[2], SK_Alice, 'Alice')
+  RX = Complex(RX0, RX1)
+  RZ = Complex(RZ)
+
+
+  iso, mul = 0, 0
+	
+	#first 4-isogeny (different from rest)
+  phiPX, phiPZ, A2, C2 = first_4_isog(phiPX, phiPZ, A)
+  phiQX, phiQZ, A2, C2 = first_4_isog(phiQX, phiQZ, A)
+  phiDX, phiDZ, A2, C2 = first_4_isog(phiDX, phiDZ, A)
+  RX, RZ, A, C = first_4_isog(RX, RZ, A)
+  iso = iso + 4
+  pts = []
+  index = 0
+
+  for row in range(1,MAX):
+    while index < (MAX - row):
+
+      
+
+
 
 
 
