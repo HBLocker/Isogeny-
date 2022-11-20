@@ -43,7 +43,8 @@ Then she starts from Eb and does the random walk again ending on:
 ```
 Eab
 ```
-- Bob proceeds mutatis mutandis and ends up on a probably different curve Eba, but surely in same isomorphism class as Alice. Thanks to j-invariant then can agree on a shared secret  j(Eab)==j(Eba)
+- Bob proceeds mutatis mutandis and ends up on a probably different curve Eba
+ Then the j-invariant then can agree on a shared secret  j(Eab)==j(Eba)
 
 
 
@@ -52,7 +53,18 @@ Eab
 
 
 
+### Refferences 
 
+
+sagemath. (NA). Isogeny computation does not finish in Sage. [Online]. sagemath. Available at: https://ask.sagemath.org/question/40675/isogeny-computation-does-not-finish-in-sage/ [Accessed 20 November 2022].
+
+Tanja Lange. (2021). Isogeny-based crypto. [Online]. Youtube. Available at: https://www.youtube.com/watch?v=ki_9p6CAdRc&list=PL6hzlGxGIS1Cnx3XS7ZD4wjcTmHqOEpTS [Accessed 20 November 2022].
+
+
+ANALOGUES OF VELU’S FORMULAS FOR ISOGENIES ON ´ ALTERNATE MODELS OF ELLIPTIC CUR. (NA). DUSTIN MOODY AND DANIEL SHUMOW. NA. NA(NA), p.NA. [Online]. Available at: https://eprint.iacr.org/2011/430.pdf [Accessed 20 November 2022].
+
+
+Will update this more 
 
 
 
